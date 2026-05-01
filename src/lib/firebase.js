@@ -2,20 +2,22 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, enableIndexedDbPersistence } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
+// These are your NEW central credentials
 const firebaseConfig = {
-  apiKey: "AIzaSyDn1uWwv8ZV5w7Ru0646VTL8HQpZUagEtk",
-  authDomain: "comboni-inventory.firebaseapp.com",
-  projectId: "comboni-inventory",
-  storageBucket: "comboni-inventory.firebasestorage.app",
-  messagingSenderId: "238239305955",
-  appId: "1:238239305955:web:81b9e3a679529dbb8cf5d6",
-  measurementId: "G-GKLNZG0P97"
+  apiKey: "AIzaSyDiKFHbw1Ws6PLKlkilRTjbUHyK2jbDWWU",
+  authDomain: "comboni-inventory-86639.firebaseapp.com",
+  projectId: "comboni-inventory-86639",
+  storageBucket: "comboni-inventory-86639.firebasestorage.app",
+  messagingSenderId: "982493337995",
+  appId: "1:982493337995:web:82fdca260708fcdf3f378e",
+  measurementId: "G-BJ6T1Q7D4L"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+// Keep your persistence logic so the school staff can work even with weak Wi-Fi
 if (typeof window !== "undefined") {
   enableIndexedDbPersistence(db).catch((err) => {
     if (err.code === 'failed-precondition') {
