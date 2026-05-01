@@ -1,190 +1,154 @@
     ---
-    import '../styles/global.css';
-    ---
+import '../styles/global.css';
+---
 
-    <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Staff Portal | Asset Entry</title>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    </head>
-    <body class="bg-[#f8fafc] min-h-screen font-sans text-slate-900">
-        
-        <!-- SUCCESS TOAST -->
-        <div id="toast" class="fixed top-24 right-5 z-[110] transform translate-x-32 opacity-0 pointer-events-none transition-all duration-700">
-            <div class="bg-emerald-500 text-white px-8 py-4 rounded-[2rem] shadow-2xl flex items-center gap-4 border border-white/20 backdrop-blur-md">
-                <div class="bg-white/20 p-2 rounded-full">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <!-- THE FIX: This line makes it readable on mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Portal | Asset Entry</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#f8fafc] min-h-screen font-sans text-slate-900">
+    
+    <!-- SUCCESS TOAST -->
+    <div id="toast" class="fixed top-24 right-5 z-[110] transform translate-x-32 opacity-0 pointer-events-none transition-all duration-700">
+        <div class="bg-emerald-500 text-white px-6 py-3 md:px-8 md:py-4 rounded-[2rem] shadow-2xl flex items-center gap-4 border border-white/20 backdrop-blur-md">
+            <div class="bg-white/20 p-2 rounded-full">
+                <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <span class="font-black tracking-widest uppercase text-[9px] md:text-[10px]">Registry Updated</span>
+        </div>
+    </div>
+
+    <!-- GLASS NAVIGATION -->
+    <nav class="fixed top-0 left-0 right-0 z-[100] bg-white/80 backdrop-blur-md border-b border-slate-200 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="/images/blocks/logo.jfif" alt="Logo" class="w-8 h-8 md:w-10 md:h-10 object-contain" />
+                <div class="flex flex-col">
+                    <span class="font-black text-slate-800 leading-none text-xs md:text-sm uppercase tracking-tighter">Comboni</span>
+                    <span class="text-[9px] md:text-[10px] font-bold text-blue-600 uppercase tracking-widest">Staff Portal</span>
                 </div>
-                <span class="font-black tracking-widest uppercase text-[10px]">Registry Updated</span>
+            </div>
+            <div class="flex items-center gap-1 md:gap-2">
+                <a href="/inventory" class="text-[9px] md:text-[10px] font-black text-slate-500 hover:text-blue-600 px-2 md:px-4 py-2 rounded-xl transition-all uppercase tracking-widest">Analytics</a>
+                <button id="logout-btn" class="text-[9px] md:text-[10px] font-black text-red-500 px-2 md:px-4 py-2 rounded-xl uppercase tracking-widest">Logout</button>
             </div>
         </div>
+    </nav>
 
-        <!-- GLASS NAVIGATION (Matched to Inventory Page) -->
-        <nav class="fixed top-0 left-0 right-0 z-[100] bg-white/80 backdrop-blur-md border-b border-slate-200 p-4">
-            <div class="container mx-auto flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <img src="/images/blocks/logo.jfif" alt="Logo" class="w-10 h-10 object-contain drop-shadow-sm" />
-                    <div class="flex flex-col">
-                        <span class="font-black text-slate-800 leading-none text-sm uppercase tracking-tighter">Comboni</span>
-                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Staff Portal</span>
-                    </div>
-                </div>
-                <div class="flex items-center gap-2">
-                    <a href="/inventory" class="text-[10px] font-black text-slate-500 hover:text-blue-600 px-4 py-2 rounded-xl transition-all uppercase tracking-widest">Analytics</a>
-                    <div class="w-px h-4 bg-slate-200 mx-2"></div>
-                    <button id="logout-btn" class="text-[10px] font-black text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-xl transition-all uppercase tracking-widest border border-transparent hover:border-red-200">Logout</button>
-                </div>
-            </div>
-        </nav>
+    <div class="h-24"></div>
 
-        <!-- SPACER FOR FIXED NAV -->
-        <div class="h-24"></div>
+    <main class="container mx-auto max-w-4xl px-4 md:px-6 pb-24">
+        
+        <div class="text-center mb-8 md:mb-12">
+            <span class="text-blue-600 font-black tracking-[0.4em] text-[9px] md:text-[10px] uppercase mb-2 block">Asset Management System</span>
+            <h1 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter uppercase">Digital <span class="text-blue-600">Registry</span></h1>
+        </div>
 
-        <main class="container mx-auto max-w-4xl px-6 pb-24">
-            
-            <!-- HEADER TEXT -->
-            <div class="text-center mb-12">
-                <span class="text-blue-600 font-black tracking-[0.4em] text-[10px] uppercase mb-2 block">Asset Management System</span>
-                <h1 class="text-4xl font-black text-slate-900 tracking-tighter uppercase">Digital <span class="text-blue-600">Registry</span></h1>
+        <div class="bg-white rounded-[2rem] md:rounded-[3rem] shadow-2xl overflow-hidden border border-slate-100 mb-10 md:mb-20">
+            <!-- FORM HEADER -->
+            <div class="bg-slate-900 p-8 md:p-12 text-center text-white relative overflow-hidden">
+                <h2 class="text-xl md:text-2xl font-black tracking-tight uppercase relative z-10">New Asset Entry</h2>
+                <p class="text-slate-400 text-[10px] mt-2 uppercase tracking-[0.3em] font-bold relative z-10">Select location and item details</p>
             </div>
 
-            <div class="bg-white rounded-[3rem] shadow-2xl overflow-hidden border border-slate-100 mb-20">
-                <!-- FORM HEADER -->
-                <div class="bg-slate-900 p-12 text-center text-white relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10">
-                        <img src="/images/blocks/comboni-logo.jfif" class="w-32 h-32 grayscale" />
+            <form id="asset-form" class="p-6 md:p-16 space-y-8 md:space-y-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+                    <div class="space-y-3">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Location Block</label>
+                        <select name="block" id="block-select" required class="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-4 md:p-5 text-sm font-bold focus:border-blue-500 focus:bg-white outline-none appearance-none">
+                            <option value="Block 1">Block 1: Administration</option>
+                            <option value="Block 2">Block 2: Grade 10</option>
+                            <option value="Block 3">Block 3: Grade 9</option>
+                            <option value="Block 4">Block 4: Science Labs</option>
+                            <option value="Block 5">Block 5: ICT & TV Room</option>
+                            <option value="Block 6">Block 6: Library</option>
+                            <option value="Block 7">Block 7: Drawing Bldg</option>
+                            <option value="Block 8">Block 8: Grade 11</option>
+                            <option value="Block 9">Block 9: Grade 12 & ICT 1</option>
+                            <option value="Block 10">Block 10: Services</option>
+                            <option value="Block 11">Block 11: Pedagogy</option>
+                        </select>
                     </div>
-                    <h2 class="text-2xl font-black tracking-tight uppercase relative z-10">New Asset Entry</h2>
-                    <p class="text-slate-400 text-xs mt-2 uppercase tracking-[0.3em] font-bold relative z-10">Select location and item details</p>
+
+                    <div class="space-y-3">
+                        <label id="section-label" class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Section / Room</label>
+                        <input name="section" type="text" placeholder="e.g. 9A or Office Name" required 
+                            class="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-4 md:p-5 text-sm font-bold focus:border-blue-500 focus:bg-white outline-none transition-all" />
+                    </div>
                 </div>
 
-                <form id="asset-form" class="p-10 md:p-16 space-y-10">
-                    <!-- ROW 1 -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                        <div class="space-y-3">
-                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Location Block</label>
-                            <select name="block" id="block-select" required class="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-5 text-sm font-bold focus:border-blue-500 focus:bg-white outline-none transition-all appearance-none cursor-pointer">
-                                <option value="Block 1">Block 1: Administration</option>
-                                <option value="Block 2">Block 2: Grade 10</option>
-                                <option value="Block 3">Block 3: Grade 9</option>
-                                <option value="Block 4">Block 4: Science Labs</option>
-                                <option value="Block 5">Block 5: ICT & TV Room</option>
-                                <option value="Block 6">Block 6: Library</option>
-                                <option value="Block 7">Block 7: Drawing Bldg</option>
-                                <option value="Block 8">Block 8: Grade 11</option>
-                                <option value="Block 9">Block 9: Grade 12 & ICT 1</option>
-                                <option value="Block 10">Block 10: Services</option>
-                                <option value="Block 11">Block 11: Pedagogy</option>
-                            </select>
-                        </div>
-
-                        <div class="space-y-3">
-                            <label id="section-label" class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Section / Room</label>
-                            <input name="section" type="text" placeholder="e.g. 9A or Office Name" required 
-                                class="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-5 text-sm font-bold focus:border-blue-500 focus:bg-white outline-none transition-all placeholder:text-slate-300" />
-                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
+                    <div class="md:col-span-2 space-y-3">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Item Description</label>
+                        <input name="description" list="items-list" placeholder="e.g. Student Desk" required 
+                            class="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-4 md:p-5 text-sm font-bold outline-none focus:border-blue-500 focus:bg-white" />
                     </div>
-
-                    <!-- ROW 2 -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                        <div class="md:col-span-2 space-y-3">
-                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Item Description</label>
-                            <input name="description" list="items-list" placeholder="e.g. Student Desk" required 
-                                class="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-5 text-sm font-bold outline-none focus:border-blue-500 focus:bg-white transition-all" />
-                        </div>
-                        <div class="space-y-3">
-                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Quantity</label>
-                            <input name="quantity" type="number" min="1" value="1" 
-                                class="w-full bg-slate-900 text-white border-none rounded-2xl p-5 text-sm font-black text-center outline-none ring-offset-2 focus:ring-2 focus:ring-blue-500 transition-all" />
-                        </div>
+                    <div class="space-y-3">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Quantity</label>
+                        <input name="quantity" type="number" min="1" value="1" 
+                            class="w-full bg-slate-900 text-white rounded-2xl p-4 md:p-5 text-sm font-black text-center outline-none" />
                     </div>
+                </div>
 
-                    <!-- CONDITION PICKER -->
-                    <div class="space-y-4">
-                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Status Condition</label>
-                        <div class="grid grid-cols-2 gap-6">
-                            <label class="relative cursor-pointer group">
-                                <input type="radio" name="condition" value="Functional" checked class="peer sr-only">
-                                <div class="p-6 text-center rounded-[2rem] border-2 border-slate-100 bg-white group-hover:border-slate-200 peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:text-emerald-700 transition-all font-black text-[10px] uppercase tracking-widest shadow-sm">
-                                    Functional
-                                </div>
-                            </label>
-                            <label class="relative cursor-pointer group">
-                                <input type="radio" name="condition" value="Non-Functional" class="peer sr-only">
-                                <div class="p-6 text-center rounded-[2rem] border-2 border-slate-100 bg-white group-hover:border-slate-200 peer-checked:border-red-500 peer-checked:bg-red-50 peer-checked:text-red-700 transition-all font-black text-[10px] uppercase tracking-widest shadow-sm">
-                                    Non-Functional
-                                </div>
-                            </label>
-                        </div>
+                <div class="space-y-4">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Status Condition</label>
+                    <div class="grid grid-cols-2 gap-4 md:gap-6">
+                        <label class="relative cursor-pointer group">
+                            <input type="radio" name="condition" value="Functional" checked class="peer sr-only">
+                            <div class="p-4 md:p-6 text-center rounded-[1.5rem] md:rounded-[2rem] border-2 border-slate-100 bg-white peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:text-emerald-700 transition-all font-black text-[10px] uppercase tracking-widest">
+                                Functional
+                            </div>
+                        </label>
+                        <label class="relative cursor-pointer group">
+                            <input type="radio" name="condition" value="Non-Functional" class="peer sr-only">
+                            <div class="p-4 md:p-6 text-center rounded-[1.5rem] md:rounded-[2rem] border-2 border-slate-100 bg-white peer-checked:border-red-500 peer-checked:bg-red-50 peer-checked:text-red-700 transition-all font-black text-[10px] uppercase tracking-widest">
+                                Non-Functional
+                            </div>
+                        </label>
                     </div>
+                </div>
 
-                    <button type="submit" class="group relative w-full bg-blue-600 text-white font-black py-6 rounded-[2rem] hover:bg-blue-700 transition-all shadow-xl hover:shadow-blue-200 uppercase tracking-[0.3em] text-xs active:scale-[0.98] flex items-center justify-center gap-3">
-                        <span>Submit to Registry</span>
-                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </button>
-                </form>
+                <button type="submit" class="w-full bg-blue-600 text-white font-black py-5 md:py-6 rounded-[1.5rem] md:rounded-[2rem] hover:bg-blue-700 transition-all shadow-xl uppercase tracking-[0.2em] md:tracking-[0.3em] text-[10px] md:text-xs flex items-center justify-center gap-3">
+                    <span>Submit to Registry</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- ACTIVITY LOG -->
+        <div class="mt-12 md:mt-20">
+            <div class="flex items-center gap-6 mb-8 md:mb-10">
+                <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] whitespace-nowrap">Session Logs</h2>
+                <div class="h-px bg-slate-200 w-full"></div>
             </div>
-
-            <!-- ACTIVITY LOG -->
-            <div class="mt-20">
-                <div class="flex items-center gap-6 mb-10">
-                    <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] whitespace-nowrap">Session Logs</h2>
-                    <div class="h-px bg-slate-200 w-full"></div>
-                </div>
-                
-                <div id="recent-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- JS CONTENT -->
-                </div>
+            <div id="recent-list" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                <!-- JS CONTENT -->
             </div>
-        </main>
+        </div>
+    </main>
 
-        <!-- INTEGRATED SYSTEM FOOTER -->
-    <footer class="mt-24 pb-12 border-t border-slate-200/60">
-        <div class="container mx-auto px-6">
+    <!-- FOOTER (Simplified for Mobile) -->
+    <footer class="mt-12 md:mt-24 pb-12 border-t border-slate-200/60">
+        <div class="container mx-auto px-6 text-center md:text-left">
             <div class="flex flex-col md:flex-row justify-between items-center gap-8 pt-12">
-                
-                <!-- School & Legal Info -->
                 <div class="flex items-center gap-5">
-                    <img src="/images/blocks/comboni-logo.jfif" alt="School Logo" class="w-10 h-10 grayscale opacity-40 hover:opacity-100 transition-opacity duration-500" />
-                    <div class="flex flex-col border-l border-slate-200 pl-5">
-                        <span class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Comboni Assets</span>
-                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                            Internal Use Only &bull; 2018 E.C. Ledger
-                        </p>
+                    <div class="flex flex-col">
+                        <span class="text-[9px] md:text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Comboni Assets</span>
+                        <p class="text-[8px] md:text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Internal Use Only • 2018 E.C. Ledger</p>
                     </div>
                 </div>
-
-                <!-- Developer Credit -->
-                <div class="flex flex-col items-center md:items-end group">
-                    <span class="text-[8px] font-black text-slate-400 uppercase tracking-[0.4em] mb-2 group-hover:text-blue-500 transition-colors">System Architect</span>
-                    <a href="https://my-portfolio-two-wine-86.vercel.app/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    class="relative overflow-hidden bg-slate-900 text-white px-6 py-3 rounded-2xl hover:bg-blue-600 transition-all duration-300 shadow-xl shadow-slate-200 flex items-center gap-3">
-                        <span class="text-[10px] font-black uppercase tracking-[0.2em]">View Developer Portfolio</span>
-                        <svg class="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                        </svg>
-                    </a>
-                </div>
-
-            </div>
-
-            <!-- Fine Print -->
-            <div class="mt-12 pt-8 border-t border-slate-100 flex flex-col items-center gap-2">
-                <p class="text-[7px] font-black text-slate-300 uppercase tracking-[0.6em]">
-                    Secure Cloud Infrastructure &bull; Comboni CTE Office
-                </p>
             </div>
         </div>
     </footer>
 
-        <datalist id="items-list">
-            <option value="Student Chair"><option value="Student Table">
-            <option value="Teacher Table"><option value="Desktop PC">
-            <option value="Projector"><option value="Armchair">
-        </datalist>
+    <datalist id="items-list">
+        <option value="Student Chair"><option value="Student Table">
+        <option value="Teacher Table"><option value="Desktop PC">
+        <option value="Projector"><option value="Armchair">
+    </datalist>
 
     <script>
     import { db, auth } from '../lib/firebase';
