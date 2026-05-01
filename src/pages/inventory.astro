@@ -5,132 +5,131 @@ import '../styles/global.css';
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Comboni Executive Analytics</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans leading-relaxed">
+<body class="bg-slate-50 text-slate-900 font-sans leading-relaxed overflow-x-hidden">
     
-    <!-- GLASS NAVIGATION: Transparent to let hero show through -->
     <!-- GLASS NAVIGATION -->
-    <nav class="fixed top-0 left-0 right-0 z-[100] bg-white/10 backdrop-blur-md border-b border-white/20 p-4">
+    <nav class="fixed top-0 left-0 right-0 z-[100] bg-white/10 backdrop-blur-md border-b border-white/20 p-3 md:p-4">
         <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <!-- CORRECTED PATH HERE -->
-                <img src="/images/blocks/logo.jfif" alt="Logo" class="w-10 h-10 object-contain drop-shadow-md" />
+            <div class="flex items-center gap-2 md:gap-3">
+                <img src="/images/blocks/logo.jfif" alt="Logo" class="w-8 h-8 md:w-10 md:h-10 object-contain drop-shadow-md" />
                 <div class="flex flex-col">
-                    <span class="font-black text-white leading-none text-sm uppercase tracking-tighter">Comboni</span>
-                    <span class="text-[10px] font-bold text-blue-300 uppercase tracking-widest">Analytics Portal</span>
+                    <span class="font-black text-white leading-none text-xs md:text-sm uppercase tracking-tighter">Comboni</span>
+                    <span class="text-[8px] md:text-[10px] font-bold text-blue-300 uppercase tracking-widest">Analytics Portal</span>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
-                <a href="/" class="text-[10px] font-black text-white/80 hover:text-white px-3 py-2 rounded-xl uppercase tracking-widest">Register</a>
-                <div class="w-px h-4 bg-white/20 mx-2"></div>
-                <button id="logout-btn" class="text-[10px] font-black text-red-400 hover:bg-red-500 hover:text-white px-4 py-2 rounded-xl uppercase tracking-widest">Logout</button>
+            <div class="flex items-center gap-1 md:gap-2">
+                <a href="/" class="text-[8px] md:text-[10px] font-black text-white/80 hover:text-white px-2 py-2 rounded-xl uppercase tracking-widest">Register</a>
+                <div class="w-px h-4 bg-white/20 mx-1 md:mx-2"></div>
+                <button id="logout-btn" class="text-[8px] md:text-[10px] font-black text-red-400 hover:bg-red-500 hover:text-white px-3 py-2 rounded-xl uppercase tracking-widest">Logout</button>
             </div>
         </div>
     </nav>
 
-    <!-- HERO SECTION (Logo removed from center for better text visibility) -->
-    <header class="relative h-[500px] bg-blue-950 flex items-center justify-center text-center px-4 overflow-hidden">
+    <!-- HERO SECTION -->
+    <header class="relative h-[400px] md:h-[500px] bg-blue-950 flex items-center justify-center text-center px-4 overflow-hidden">
         <img src="/images/blocks/block1.jpg" 
              class="absolute inset-0 w-full h-full object-cover opacity-30" />
         
         <div class="absolute inset-0 bg-gradient-to-t from-slate-50 via-blue-950/60 to-transparent"></div>
         
-        <!-- text container shifted down slightly to clear the fixed nav -->
-        <div class="relative z-10 flex flex-col items-center mt-16">
-            <span class="text-blue-300 font-black tracking-[0.5em] text-[10px] uppercase mb-4 block drop-shadow-md">
+        <div class="relative z-10 flex flex-col items-center mt-12 md:mt-16">
+            <span class="text-blue-300 font-black tracking-[0.3em] md:tracking-[0.5em] text-[8px] md:text-[10px] uppercase mb-4 block drop-shadow-md">
                 Official 2018 E.C. Ledger
             </span>
-            <h1 class="text-5xl md:text-7xl font-black text-white mb-2 drop-shadow-2xl tracking-tighter uppercase">
+            <h1 class="text-4xl md:text-7xl font-black text-white mb-2 drop-shadow-2xl tracking-tighter uppercase">
                 Inventory <span class="text-blue-400">Control</span>
             </h1>
-            <p class="text-blue-100 text-sm font-medium max-w-2xl mx-auto italic opacity-90 uppercase tracking-[0.2em]">
+            <p class="text-blue-100 text-xs md:text-sm font-medium max-w-2xl mx-auto italic opacity-90 uppercase tracking-[0.1em] md:tracking-[0.2em]">
                 "Visualizing every asset, Block by Block"
             </p>
         </div>
     </header>
 
-    <!-- MAIN CONTENT: Reduced negative margin (-mt-16 instead of -mt-28) to stop overlap -->
-    <main class="container mx-auto px-6 relative z-20 -mt-16">
+    <!-- MAIN CONTENT -->
+    <main class="container mx-auto px-4 md:px-6 relative z-20 -mt-12 md:mt-16">
         
-        <!-- Global Stat Cards -->
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-16">
-            <div class="bg-white p-6 rounded-[2rem] shadow-2xl border-b-4 border-blue-600 hover:-translate-y-2 hover:shadow-blue-200/50 transition-all duration-300 group cursor-default">
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-600 transition-colors">Total Assets</p>
-                <h2 id="grand-total" class="text-3xl font-black text-slate-800 tracking-tighter">0</h2>
+        <!-- Global Stat Cards: Adjusted to 2 cols on mobile, 3 on tablet, 6 on desktop -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 mb-10 md:mb-16">
+            <div class="bg-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl border-b-4 border-blue-600 hover:-translate-y-1 transition-all duration-300 group cursor-default">
+                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-600 transition-colors">Total Assets</p>
+                <h2 id="grand-total" class="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter">0</h2>
             </div>
             
-            <div class="bg-white p-6 rounded-[2rem] shadow-2xl border-b-4 border-emerald-500 hover:-translate-y-2 hover:shadow-emerald-200/50 transition-all duration-300 group cursor-default">
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-emerald-500 transition-colors">Functional</p>
-                <h2 id="func-total" class="text-3xl font-black text-emerald-600 tracking-tighter">0</h2>
+            <div class="bg-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl border-b-4 border-emerald-500 hover:-translate-y-1 transition-all duration-300 group cursor-default">
+                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-emerald-500 transition-colors">Functional</p>
+                <h2 id="func-total" class="text-2xl md:text-3xl font-black text-emerald-600 tracking-tighter">0</h2>
             </div>
 
-            <div class="bg-white p-6 rounded-[2rem] shadow-2xl border-b-4 border-blue-400 hover:-translate-y-2 transition-all duration-300 group cursor-default">
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-400">Chairs</p>
-                <h2 id="chairs-total" class="text-3xl font-black text-slate-800 tracking-tighter">0</h2>
+            <div class="bg-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl border-b-4 border-blue-400 hover:-translate-y-1 transition-all duration-300 group cursor-default">
+                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-400">Chairs</p>
+                <h2 id="chairs-total" class="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter">0</h2>
             </div>
 
-            <div class="bg-white p-6 rounded-[2rem] shadow-2xl border-b-4 border-blue-400 hover:-translate-y-2 transition-all duration-300 group cursor-default">
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-400">Tables</p>
-                <h2 id="tables-total" class="text-3xl font-black text-slate-800 tracking-tighter">0</h2>
+            <div class="bg-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl border-b-4 border-blue-400 hover:-translate-y-1 transition-all duration-300 group cursor-default">
+                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-400">Tables</p>
+                <h2 id="tables-total" class="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter">0</h2>
             </div>
 
-            <div class="bg-white p-6 rounded-[2rem] shadow-2xl border-b-4 border-blue-400 hover:-translate-y-2 transition-all duration-300 group cursor-default">
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-400">Computers</p>
-                <h2 id="pcs-total" class="text-3xl font-black text-slate-800 tracking-tighter">0</h2>
+            <div class="bg-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl border-b-4 border-blue-400 hover:-translate-y-1 transition-all duration-300 group cursor-default">
+                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-400">Computers</p>
+                <h2 id="pcs-total" class="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter">0</h2>
             </div>
 
-            <button id="export-btn" class="group bg-slate-900 text-white p-6 rounded-[2rem] shadow-2xl hover:bg-blue-600 hover:-translate-y-2 hover:shadow-blue-400/40 transition-all duration-300 flex flex-col justify-center items-center relative overflow-hidden">
-                <span class="text-[9px] font-black uppercase opacity-70 tracking-tighter">Report</span>
-                <span class="text-sm font-extrabold uppercase tracking-tighter">Excel</span>
+            <!-- Export Button: Spans 2 columns on mobile to be easily clickable -->
+            <button id="export-btn" class="col-span-2 md:col-span-1 group bg-slate-900 text-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl hover:bg-blue-600 hover:-translate-y-1 transition-all duration-300 flex flex-row md:flex-col justify-center items-center gap-2 relative overflow-hidden">
+                <span class="text-[8px] md:text-[9px] font-black uppercase opacity-70 tracking-tighter">Report</span>
+                <span class="text-xs md:text-sm font-extrabold uppercase tracking-tighter">Excel Export</span>
             </button>
         </div>
 
-        <div id="block-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div id="block-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
             <!-- JS Injected Content -->
         </div>
 
     </main>
 
-   <!-- SYSTEM FOOTER -->
-<footer class="mt-20 pb-10 border-t border-slate-200/50">
-    <div class="container mx-auto px-6">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-6 pt-10">
-            
-            <!-- System Info -->
-            <div class="flex items-center gap-4">
-                <img src="/images/blocks/logo.jfif" alt="Logo" class="w-8 h-8 grayscale opacity-50" />
-                <div class="flex flex-col">
-                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Comboni Inventory Management</span>
-                    <span class="text-[9px] font-medium text-slate-400 italic">Official 2018 E.C. Ledger System</span>
+    <!-- SYSTEM FOOTER -->
+    <footer class="mt-20 pb-10 border-t border-slate-200/50">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8 pt-10">
+                
+                <!-- System Info -->
+                <div class="flex items-center gap-4">
+                    <img src="/images/blocks/logo.jfif" alt="Logo" class="w-8 h-8 grayscale opacity-50" />
+                    <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.1em] md:tracking-[0.2em]">Comboni Inventory Management</span>
+                        <span class="text-[9px] font-medium text-slate-400 italic">Official 2018 E.C. Ledger System</span>
+                    </div>
                 </div>
+
+                <!-- Developer Credit -->
+                <div class="flex flex-col items-center md:items-end">
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Architected & Developed by</span>
+                    <a href="https://my-portfolio-two-wine-86.vercel.app/" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="group flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-2xl hover:bg-blue-600 transition-all duration-300 shadow-lg shadow-slate-200">
+                        <span class="text-[10px] font-black uppercase tracking-widest">View Portfolio</span>
+                        <svg class="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a>
+                </div>
+
             </div>
 
-            <!-- Developer Credit -->
-            <div class="flex flex-col items-center md:items-end">
-                <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Architected & Developed by</span>
-                <a href="https://my-portfolio-two-wine-86.vercel.app/" 
-                   target="_blank" 
-                   rel="noopener noreferrer"
-                   class="group flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-2xl hover:bg-blue-600 transition-all duration-300 shadow-lg shadow-slate-200">
-                    <span class="text-[10px] font-black uppercase tracking-widest">View Portfolio</span>
-                    <svg class="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                    </svg>
-                </a>
+            <!-- Bottom Bar -->
+            <div class="mt-10 pt-6 border-t border-slate-100 flex justify-center text-center">
+                <p class="text-[8px] font-bold text-slate-300 uppercase tracking-[0.3em] md:tracking-[0.5em]">
+                    &copy; 2026 Comboni Schools &bull; All Rights Reserved
+                </p>
             </div>
-
         </div>
-
-        <!-- Bottom Bar -->
-        <div class="mt-10 pt-6 border-t border-slate-100 flex justify-center">
-            <p class="text-[8px] font-bold text-slate-300 uppercase tracking-[0.5em]">
-                &copy; 2026 Comboni Schools &bull; All Rights Reserved
-            </p>
-        </div>
-    </div>
-</footer>
+    </footer>
 
     <script>
         import { db, auth } from '../lib/firebase';

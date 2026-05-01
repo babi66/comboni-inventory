@@ -5,49 +5,52 @@ import '../styles/global.css';
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <!-- Added initial-scale=1 to ensure proper zoom on mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login | Comboni Executive</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
-<body class="min-h-screen font-sans flex flex-col relative overflow-hidden">
+<body class="min-h-screen font-sans flex flex-col relative overflow-x-hidden">
     
     <!-- FULL SCREEN BACKGROUND IMAGE -->
     <div class="fixed inset-0 z-0">
         <img src="/images/blocks/block1.jpg" 
              class="w-full h-full object-cover" 
              alt="Comboni School Grounds" />
-        <!-- Dark overlay to make the login card and navbar text readable -->
         <div class="absolute inset-0 bg-slate-950/40 backdrop-blur-[2px]"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/80"></div>
     </div>
 
-    <!-- TOP NAVIGATION (Logo on Left) -->
-    <nav class="relative z-20 w-full p-6">
-        <div class="container mx-auto flex items-center">
-            <div class="flex items-center gap-3 bg-black/20 backdrop-blur-md p-2 pr-6 rounded-full border border-white/10">
-                <img src="/images/blocks/logo.jfif" alt="Logo" class="w-10 h-10 object-contain" />
-                <div class="flex flex-col">
-                    <span class="font-black text-white leading-none text-sm uppercase tracking-tighter">Comboni</span>
-                    <span class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Executive</span>
-                </div>
+    <!-- TOP NAVIGATION -->
+    <!-- TOP NAVIGATION (Pinned to Left Corner) -->
+<nav class="relative z-20 w-full p-4 md:p-6">
+    <!-- Changed justify-center to justify-start to keep logo left on mobile -->
+    <div class="container mx-auto flex items-center justify-start">
+        <div class="flex items-center gap-3 bg-black/20 backdrop-blur-md p-2 pr-6 rounded-full border border-white/10">
+            <img src="/images/blocks/logo.jfif" alt="Logo" class="w-8 h-8 md:w-10 md:h-10 object-contain" />
+            <div class="flex flex-col">
+                <span class="font-black text-white leading-none text-xs md:text-sm uppercase tracking-tighter">Comboni</span>
+                <span class="text-[8px] md:text-[10px] font-bold text-blue-400 uppercase tracking-widest">Executive</span>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
 
     <!-- CENTERED LOGIN CARD -->
-    <main class="relative z-10 flex-1 flex items-center justify-center p-6">
-        <div class="w-full max-w-md bg-white/10 backdrop-blur-2xl p-10 rounded-[3rem] border border-white/20 shadow-[0_32px_64px_-15px_rgba(0,0,0,0.5)]">
-            <div class="text-center mb-10">
-                <h1 class="text-3xl font-black text-white tracking-tighter uppercase mb-2">System <span class="text-blue-500">Access</span></h1>
-                <p class="text-slate-300 text-[10px] font-bold uppercase tracking-[0.4em]">Inventory Management 2018 E.C.</p>
+    <main class="relative z-10 flex-1 flex items-center justify-center p-4 md:p-6">
+        <!-- Changed rounded-[3rem] to be smaller on mobile (rounded-3xl) to save space -->
+        <div class="w-full max-w-md bg-white/10 backdrop-blur-2xl p-6 md:p-10 rounded-3xl md:rounded-[3rem] border border-white/20 shadow-[0_32px_64px_-15px_rgba(0,0,0,0.5)]">
+            <div class="text-center mb-6 md:mb-10">
+                <h1 class="text-2xl md:text-3xl font-black text-white tracking-tighter uppercase mb-2">System <span class="text-blue-500">Access</span></h1>
+                <p class="text-slate-300 text-[8px] md:text-[10px] font-bold uppercase tracking-[0.3em] md:tracking-[0.4em]">Inventory Management 2018 E.C.</p>
             </div>
 
-            <form id="login-form" class="space-y-6">
+            <form id="login-form" class="space-y-4 md:space-y-6">
                 <!-- IDENTIFIER -->
                 <div class="space-y-2">
                     <label class="block text-[10px] font-black text-slate-300 uppercase tracking-widest ml-2">Identify</label>
                     <input type="text" id="email" required 
-                           class="w-full bg-white/10 border-2 border-white/5 rounded-2xl p-4 text-white text-sm outline-none focus:border-blue-500 focus:bg-white/20 transition-all placeholder:text-slate-500" 
+                           class="w-full bg-white/10 border-2 border-white/5 rounded-xl md:rounded-2xl p-3 md:p-4 text-white text-sm outline-none focus:border-blue-500 focus:bg-white/20 transition-all placeholder:text-slate-500" 
                            placeholder="Username or Email">
                 </div>
 
@@ -55,19 +58,19 @@ import '../styles/global.css';
                 <div class="space-y-2">
                     <label class="block text-[10px] font-black text-slate-300 uppercase tracking-widest ml-2">Security Key</label>
                     <input type="password" id="password" required 
-                           class="w-full bg-white/10 border-2 border-white/5 rounded-2xl p-4 text-white text-sm outline-none focus:border-blue-500 focus:bg-white/20 transition-all placeholder:text-slate-500" 
+                           class="w-full bg-white/10 border-2 border-white/5 rounded-xl md:rounded-2xl p-3 md:p-4 text-white text-sm outline-none focus:border-blue-500 focus:bg-white/20 transition-all placeholder:text-slate-500" 
                            placeholder="••••••••">
                 </div>
                 
                 <!-- ERROR MESSAGE -->
                 <div id="error-message" class="hidden animate-shake">
-                    <div class="bg-red-500/20 border border-red-500/40 text-red-200 text-[10px] font-bold uppercase p-4 rounded-xl text-center tracking-widest backdrop-blur-md">
+                    <div class="bg-red-500/20 border border-red-500/40 text-red-200 text-[10px] font-bold uppercase p-3 md:p-4 rounded-xl text-center tracking-widest backdrop-blur-md">
                         Invalid Credentials
                     </div>
                 </div>
 
                 <!-- SUBMIT -->
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-5 rounded-2xl transition-all shadow-xl shadow-blue-900/40 uppercase tracking-[0.3em] text-xs active:scale-95 group flex items-center justify-center gap-3">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 md:py-5 rounded-xl md:rounded-2xl transition-all shadow-xl shadow-blue-900/40 uppercase tracking-[0.2em] md:tracking-[0.3em] text-[10px] md:text-xs active:scale-95 group flex items-center justify-center gap-3">
                     <span>Unlock Portal</span>
                     <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
@@ -78,42 +81,35 @@ import '../styles/global.css';
     </main>
 
     <!-- FOOTER -->
-   <!-- MINIMALIST INTEGRATED FOOTER -->
-<footer class="mt-auto py-8 text-center relative z-10">
-    <div class="container mx-auto px-6 max-w-xl">
-        
-        <!-- Location & Identity -->
-        <p class="text-[9px] font-bold text-slate-500/60 uppercase tracking-[0.5em] mb-4">
-            Comboni Catholic School &bull; Ethiopia
-        </p>
-
-        <!-- Developer & Internal Use Info -->
-        <div class="flex flex-col md:flex-row items-center justify-center gap-x-6 gap-y-3">
-            <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">
-                Internal Use Only &bull; 2018 E.C. Ledger
+    <footer class="mt-auto py-6 md:py-8 text-center relative z-10">
+        <div class="container mx-auto px-6 max-w-xl">
+            <p class="text-[8px] md:text-[9px] font-bold text-slate-500/60 uppercase tracking-[0.4em] md:tracking-[0.5em] mb-4">
+                Comboni Catholic School &bull; Ethiopia
             </p>
-            
-            <!-- Hidden divider for desktop -->
-            <div class="hidden md:block w-px h-3 bg-slate-300"></div>
 
-            <a href="https://my-portfolio-two-wine-86.vercel.app/" 
-               target="_blank" 
-               rel="noopener noreferrer"
-               class="group flex items-center gap-2 hover:text-blue-500 transition-colors">
-                <span class="text-[8px] font-black text-slate-400 group-hover:text-blue-500 uppercase tracking-widest transition-colors">
-                    Architected by <span class="text-slate-600">Tebarek Tarekegn</span>
-                </span>
-                <svg class="w-2.5 h-2.5 text-slate-400 group-hover:text-blue-500 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                </svg>
-            </a>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-x-6 gap-y-3">
+                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest text-center">
+                    Internal Use Only &bull; 2018 E.C. Ledger
+                </p>
+                
+                <div class="hidden md:block w-px h-3 bg-slate-300/20"></div>
+
+                <a href="https://my-portfolio-two-wine-86.vercel.app/" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="group flex items-center gap-2 hover:text-blue-500 transition-colors">
+                    <span class="text-[8px] font-black text-slate-400 group-hover:text-blue-500 uppercase tracking-widest transition-colors text-center">
+                        Architected by <span class="text-slate-600">Tebarek Tarekegn</span>
+                    </span>
+                    <svg class="w-2.5 h-2.5 text-slate-400 group-hover:text-blue-500 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </a>
+            </div>
         </div>
-
-    </div>
-</footer>
+    </footer>
 
     <style>
-        /* Modern Shake Animation for errors */
         .animate-shake {
             animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
         }
