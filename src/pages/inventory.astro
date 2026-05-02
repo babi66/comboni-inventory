@@ -208,83 +208,91 @@ import '../styles/global.css';
         });
 
         function generateSections(assets) {
-            const groups = {};
-            assets.forEach(a => {
-                const sec = a.section || "General";
-                if (!groups[sec]) groups[sec] = [];
-                groups[sec].push(a);
-            });
-            return Object.entries(groups).map(([sec, items]) => `
-                <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="font-black text-slate-700 text-[9px] uppercase tracking-tighter">Section ${sec}</span>
-                        <span class="text-[8px] font-black bg-white px-2 py-0.5 rounded shadow-sm text-slate-500 border border-slate-200">
-                            ${items.reduce((s, i) => s + Number(i.quantity || 0), 0)} Qty
-                        </span>
+    const groups = {};
+    assets.forEach(a => {
+        const sec = a.section || "General";
+        if (!groups[sec]) groups[sec] = [];
+        groups[sec].push(a);
+    });
+
+    return Object.entries(groups).map(([sec, items]) => `
+        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+            <div class="flex justify-between items-center mb-2">
+                <span class="font-black text-slate-700 text-[9px] uppercase tracking-tighter">Section ${sec}</span>
+                <span class="text-[8px] font-black bg-white px-2 py-0.5 rounded shadow-sm text-slate-500 border border-slate-200">
+                    ${items.reduce((s, i) => s + Number(i.quantity || 0), 0)} Qty
+                </span>
+            </div>
+            <div class="text-[10px] text-slate-500 leading-tight space-y-1">
+                ${items.map(i => `
+                    <div class="flex gap-1 border-b border-slate-200/50 pb-1 last:border-0 last:pb-0">
+                        <span class="font-bold text-blue-600 shrink-0">[${i.itemCode || 'N/A'}]</span>
+                        <span>${i.quantity}x ${i.description}</span>
                     </div>
-                    <div class="text-[10px] text-slate-500 leading-tight">
-                        ${items.map(i => `${i.quantity}x ${i.description}`).join(', ')}
-                    </div>
-                </div>
-            `).join('');
-        }
+                `).join('')}
+            </div>
+        </div>
+    `).join('');
+}
 
         document.getElementById('export-btn')?.addEventListener('click', () => {
-            if (currentAssets.length === 0) return alert("No data to export!");
+    if (currentAssets.length === 0) return alert("No data to export!");
 
-            // 1. Main Heading
-            const title = [["COMBONI SCHOOL FIXED ASSETS 2018 E.C"]];
-            
-            // 2. Metadata Heading
-            const date = [["Report Date: " + new Date().toLocaleDateString()]];
-            
-            // 3. Spacing Row
-            const empty = [[]];
-            
-            // 4. SUB-HEADINGS (These are the column titles you were missing)
-            const columnHeadings = [["Block", "Section/Room", "Item Description", "Quantity", "Condition"]];
-            
-            // 5. Data Rows
-            const rows = currentAssets.map(d => [
-                d.block || "N/A", 
-                d.section || "General", 
-                d.description || "Unnamed Item", 
-                d.quantity || 0, 
-                d.condition || "N/A"
-            ]);
+    // 1. Main Heading
+    const title = [["COMBONI SCHOOL FIXED ASSETS 2018 E.C"]];
+    
+    // 2. Metadata Heading
+    const date = [["Report Date: " + new Date().toLocaleDateString()]];
+    
+    // 3. Spacing Row
+    const empty = [[]];
+    
+    // 4. SUB-HEADINGS (Updated to include Item Code at the start)
+    const columnHeadings = [["Item Code", "Block", "Section/Room", "Item Description", "Quantity", "Condition"]];
+    
+    // 5. Data Rows (Updated to pull d.itemCode)
+    const rows = currentAssets.map(d => [
+        d.itemCode || "N/A",
+        d.block || "N/A", 
+        d.section || "General", 
+        d.description || "Unnamed Item", 
+        d.quantity || 0, 
+        d.condition || "N/A"
+    ]);
 
-            // Combine everything into the final sheet array
-            const finalData = [
-                ...title, 
-                ...date, 
-                ...empty, 
-                ...columnHeadings, 
-                ...rows
-            ];
+    // Combine everything into the final sheet array
+    const finalData = [
+        ...title, 
+        ...date, 
+        ...empty, 
+        ...columnHeadings, 
+        ...rows
+    ];
 
-            // Create Worksheet
-            const ws = XLSX.utils.aoa_to_sheet(finalData);
+    // Create Worksheet
+    const ws = XLSX.utils.aoa_to_sheet(finalData);
 
-            // Centering the Main Heading (Merge A1 to E1)
-            ws["!merges"] = [
-                { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } } 
-            ];
+    // Centering the Main Heading (Merge A1 to F1 - updated to 5 for the 6th column)
+    ws["!merges"] = [
+        { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } } 
+    ];
 
-            // Set Column Widths for better readability
-            ws["!cols"] = [
-                { wch: 15 }, // Block
-                { wch: 20 }, // Section
-                { wch: 40 }, // Description
-                { wch: 10 }, // Quantity
-                { wch: 15 }  // Condition
-            ];
+    // Set Column Widths (Updated for the new 6-column layout)
+    ws["!cols"] = [
+        { wch: 15 }, // Item Code
+        { wch: 15 }, // Block
+        { wch: 20 }, // Section
+        { wch: 40 }, // Description
+        { wch: 10 }, // Quantity
+        { wch: 15 }  // Condition
+    ];
 
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Assets_2018_EC");
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Assets_2018_EC");
 
-            // Save File
-            XLSX.writeFile(wb, "Comboni_Fixed_Assets_2018EC.xlsx");
-        });
+    // Save File
+    XLSX.writeFile(wb, "Comboni_Fixed_Assets_2018EC.xlsx");
+});
     </script>
 </body>
 </html>

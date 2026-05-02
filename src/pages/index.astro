@@ -56,66 +56,75 @@ import '../styles/global.css';
             </div>
 
             <form id="asset-form" class="p-6 md:p-16 space-y-8 md:space-y-10">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
-                    <div class="space-y-3">
-                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Location Block</label>
-                        <select name="block" id="block-select" required class="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-4 md:p-5 text-sm font-bold focus:border-blue-500 focus:bg-white outline-none appearance-none">
-                            <option value="Block 1">Block 1: Administration</option>
-                            <option value="Block 2">Block 2: Grade 10</option>
-                            <option value="Block 3">Block 3: Grade 9</option>
-                            <option value="Block 4">Block 4: Science Labs</option>
-                            <option value="Block 5">Block 5: ICT & TV Room</option>
-                            <option value="Block 6">Block 6: Library</option>
-                            <option value="Block 7">Block 7: Drawing Bldg</option>
-                            <option value="Block 8">Block 8: Grade 11</option>
-                            <option value="Block 9">Block 9: Grade 12 & ICT 1</option>
-                            <option value="Block 10">Block 10: Services</option>
-                            <option value="Block 11">Block 11: Pedagogy</option>
-                        </select>
-                    </div>
+    <!-- Row 1: Location Details -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+        <div class="space-y-3">
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Location Block</label>
+            <select name="block" id="block-select" required class="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-4 md:p-5 text-sm font-bold focus:border-blue-500 focus:bg-white outline-none appearance-none">
+                <option value="Block 1">Block 1: Administration</option>
+                <option value="Block 2">Block 2: Grade 10</option>
+                <option value="Block 3">Block 3: Grade 9</option>
+                <option value="Block 4">Block 4: Science Labs</option>
+                <option value="Block 5">Block 5: ICT & TV Room</option>
+                <option value="Block 6">Block 6: Library</option>
+                <option value="Block 7">Block 7: Drawing Bldg</option>
+                <option value="Block 8">Block 8: Grade 11</option>
+                <option value="Block 9">Block 9: Grade 12 & ICT 1</option>
+                <option value="Block 10">Block 10: Services</option>
+                <option value="Block 11">Block 11: Pedagogy</option>
+            </select>
+        </div>
 
-                    <div class="space-y-3">
-                        <label id="section-label" class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Section / Room</label>
-                        <input name="section" type="text" placeholder="e.g. 9A or Office Name" required 
-                            class="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-4 md:p-5 text-sm font-bold focus:border-blue-500 focus:bg-white outline-none transition-all" />
-                    </div>
+        <div class="space-y-3">
+            <label id="section-label" class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Section / Room</label>
+            <input name="section" type="text" placeholder="e.g. 9A or Office Name" required 
+                class="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-4 md:p-5 text-sm font-bold focus:border-blue-500 focus:bg-white outline-none transition-all" />
+        </div>
+    </div>
+
+    <!-- Row 2: Asset Identification (Integrated Item Code) -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-10">
+        <div class="space-y-3">
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Item Code</label>
+            <input name="itemCode" type="text" placeholder="e.g. CBT-001" required 
+                class="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-4 md:p-5 text-sm font-bold outline-none focus:border-blue-500 focus:bg-white" />
+        </div>
+        <div class="md:col-span-2 space-y-3">
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Item Description</label>
+            <input name="description" list="items-list" placeholder="e.g. Student Desk" required 
+                class="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-4 md:p-5 text-sm font-bold outline-none focus:border-blue-500 focus:bg-white" />
+        </div>
+        <div class="space-y-3">
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Qty</label>
+            <input name="quantity" type="number" min="1" value="1" 
+                class="w-full bg-slate-900 text-white rounded-2xl p-4 md:p-5 text-sm font-black text-center outline-none" />
+        </div>
+    </div>
+
+    <!-- Row 3: Condition Selection -->
+    <div class="space-y-4">
+        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Status Condition</label>
+        <div class="grid grid-cols-2 gap-4 md:gap-6">
+            <label class="relative cursor-pointer group">
+                <input type="radio" name="condition" value="Functional" checked class="peer sr-only">
+                <div class="p-4 md:p-6 text-center rounded-[1.5rem] md:rounded-[2rem] border-2 border-slate-100 bg-white peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:text-emerald-700 transition-all font-black text-[10px] uppercase tracking-widest">
+                    Functional
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
-                    <div class="md:col-span-2 space-y-3">
-                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Item Description</label>
-                        <input name="description" list="items-list" placeholder="e.g. Student Desk" required 
-                            class="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-4 md:p-5 text-sm font-bold outline-none focus:border-blue-500 focus:bg-white" />
-                    </div>
-                    <div class="space-y-3">
-                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Quantity</label>
-                        <input name="quantity" type="number" min="1" value="1" 
-                            class="w-full bg-slate-900 text-white rounded-2xl p-4 md:p-5 text-sm font-black text-center outline-none" />
-                    </div>
+            </label>
+            <label class="relative cursor-pointer group">
+                <input type="radio" name="condition" value="Non-Functional" class="peer sr-only">
+                <div class="p-4 md:p-6 text-center rounded-[1.5rem] md:rounded-[2rem] border-2 border-slate-100 bg-white peer-checked:border-red-500 peer-checked:bg-red-50 peer-checked:text-red-700 transition-all font-black text-[10px] uppercase tracking-widest">
+                    Non-Functional
                 </div>
+            </label>
+        </div>
+    </div>
 
-                <div class="space-y-4">
-                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Status Condition</label>
-                    <div class="grid grid-cols-2 gap-4 md:gap-6">
-                        <label class="relative cursor-pointer group">
-                            <input type="radio" name="condition" value="Functional" checked class="peer sr-only">
-                            <div class="p-4 md:p-6 text-center rounded-[1.5rem] md:rounded-[2rem] border-2 border-slate-100 bg-white peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:text-emerald-700 transition-all font-black text-[10px] uppercase tracking-widest">
-                                Functional
-                            </div>
-                        </label>
-                        <label class="relative cursor-pointer group">
-                            <input type="radio" name="condition" value="Non-Functional" class="peer sr-only">
-                            <div class="p-4 md:p-6 text-center rounded-[1.5rem] md:rounded-[2rem] border-2 border-slate-100 bg-white peer-checked:border-red-500 peer-checked:bg-red-50 peer-checked:text-red-700 transition-all font-black text-[10px] uppercase tracking-widest">
-                                Non-Functional
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full bg-blue-600 text-white font-black py-5 md:py-6 rounded-[1.5rem] md:rounded-[2rem] hover:bg-blue-700 transition-all shadow-xl uppercase tracking-[0.2em] md:tracking-[0.3em] text-[10px] md:text-xs flex items-center justify-center gap-3">
-                    <span>Submit to Registry</span>
-                </button>
-            </form>
+    <!-- Row 4: Action Button -->
+    <button type="submit" class="w-full bg-blue-600 text-white font-black py-5 md:py-6 rounded-[1.5rem] md:rounded-[2rem] hover:bg-blue-700 transition-all shadow-xl uppercase tracking-[0.2em] md:tracking-[0.3em] text-[10px] md:text-xs flex items-center justify-center gap-3">
+        <span>Submit to Registry</span>
+    </button>
+</form>
         </div>
 
         <!-- ACTIVITY LOG -->
@@ -131,7 +140,11 @@ import '../styles/global.css';
     </main>
 
     <!-- FOOTER (Simplified for Mobile) -->
-    <footer class="mt-20 pb-10 border-t border-slate-200/50">
+
+
+
+   <footer class="mt-20 pb-10 border-t border-slate-200/50">
+
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center gap-8 pt-10">
                 
@@ -196,79 +209,86 @@ import '../styles/global.css';
 
     // 2. SECURE DATA SUBMISSION
     assetForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(assetForm);
-        
-        // UI Feedback: Disable button
-        submitBtn.disabled = true;
-        submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+    e.preventDefault();
+    const formData = new FormData(assetForm);
+    
+    // UI Feedback: Disable button
+    submitBtn.disabled = true;
+    submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
-        try {
-            await addDoc(collection(db, "assets"), {
-                block: formData.get('block'),
-                section: formData.get('section'),
-                description: formData.get('description'),
-                quantity: Number(formData.get('quantity')),
-                condition: formData.get('condition'),
-                createdAt: serverTimestamp()
-            });
-            
-            // Show Toast
-            toast.classList.remove('translate-x-32', 'opacity-0', 'pointer-events-none');
-            setTimeout(() => toast.classList.add('translate-x-32', 'opacity-0', 'pointer-events-none'), 3000);
-            
-            assetForm.reset();
-            sectionLabel.innerText = "Section / Room";
-        } catch (err) { 
-            console.error(err);
-            alert("Error saving to cloud ledger."); 
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-        }
-    });
+    try {
+        await addDoc(collection(db, "assets"), {
+            itemCode: formData.get('itemCode'), // Integrated new field
+            block: formData.get('block'),
+            section: formData.get('section'),
+            description: formData.get('description'),
+            quantity: Number(formData.get('quantity')),
+            condition: formData.get('condition'),
+            createdAt: serverTimestamp()
+        });
+        
+        // Show Toast
+        toast.classList.remove('translate-x-32', 'opacity-0', 'pointer-events-none');
+        setTimeout(() => toast.classList.add('translate-x-32', 'opacity-0', 'pointer-events-none'), 3000);
+        
+        assetForm.reset();
+        
+        // Reset the dynamic label to default
+        sectionLabel.innerText = "Section / Room";
+        
+    } catch (err) { 
+        console.error(err);
+        alert("Error saving to cloud ledger."); 
+    } finally {
+        // UI Feedback: Re-enable button
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+});
 
     // 3. REAL-TIME LOGS WITH SCOPED DELETE
     const q = query(collection(db, "assets"), orderBy("createdAt", "desc"), limit(10));
     
-    onSnapshot(q, (snapshot) => {
-        const list = document.getElementById('recent-list');
-        list.innerHTML = snapshot.docs.map(snap => {
-            const data = snap.data();
-            const isFunctional = data.condition === 'Functional';
-            return `
-            <div class="bg-white p-6 md:p-8 rounded-[2.5rem] shadow-sm border border-slate-100 flex justify-between items-center group hover:shadow-xl hover:border-blue-100 transition-all duration-300">
-                <div class="space-y-3">
-                    <div class="flex items-center gap-2">
-                        <span class="text-[8px] font-black bg-blue-50 text-blue-600 px-2.5 py-1 rounded-lg uppercase tracking-tighter">${data.block}</span>
-                        <span class="text-[8px] font-black bg-slate-100 text-slate-500 px-2.5 py-1 rounded-lg uppercase tracking-tighter">${data.section}</span>
-                    </div>
-                    <div>
-                        <p class="text-sm font-black text-slate-800 leading-tight">${data.quantity}x ${data.description}</p>
-                        <div class="flex items-center gap-1.5 mt-1">
-                            <div class="w-1.5 h-1.5 rounded-full ${isFunctional ? 'bg-emerald-500' : 'bg-red-500'}"></div>
-                            <p class="text-[9px] font-black ${isFunctional ? 'text-emerald-600' : 'text-red-600'} uppercase tracking-widest">${data.condition}</p>
-                        </div>
+   onSnapshot(q, (snapshot) => {
+    const list = document.getElementById('recent-list');
+    list.innerHTML = snapshot.docs.map(snap => {
+        const data = snap.data();
+        const isFunctional = data.condition === 'Functional';
+        return `
+        <div class="bg-white p-6 md:p-8 rounded-[2.5rem] shadow-sm border border-slate-100 flex justify-between items-center group hover:shadow-xl hover:border-blue-100 transition-all duration-300">
+            <div class="space-y-3">
+                <div class="flex items-center gap-2">
+                    <!-- New Item Code Badge -->
+                    <span class="text-[8px] font-black bg-slate-900 text-white px-2.5 py-1 rounded-lg uppercase tracking-tighter">${data.itemCode || 'NO CODE'}</span>
+                    
+                    <span class="text-[8px] font-black bg-blue-50 text-blue-600 px-2.5 py-1 rounded-lg uppercase tracking-tighter">${data.block}</span>
+                    <span class="text-[8px] font-black bg-slate-100 text-slate-500 px-2.5 py-1 rounded-lg uppercase tracking-tighter">${data.section}</span>
+                </div>
+                <div>
+                    <p class="text-sm font-black text-slate-800 leading-tight">${data.quantity}x ${data.description}</p>
+                    <div class="flex items-center gap-1.5 mt-1">
+                        <div class="w-1.5 h-1.5 rounded-full ${isFunctional ? 'bg-emerald-500' : 'bg-red-500'}"></div>
+                        <p class="text-[9px] font-black ${isFunctional ? 'text-emerald-600' : 'text-red-600'} uppercase tracking-widest">${data.condition}</p>
                     </div>
                 </div>
-                <button data-id="${snap.id}" class="delete-trigger p-4 text-slate-200 hover:text-red-500 hover:bg-red-50 rounded-3xl transition-all opacity-0 group-hover:opacity-100">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                </button>
             </div>
-            `;
-        }).join('');
+            <button data-id="${snap.id}" class="delete-trigger p-4 text-slate-200 hover:text-red-500 hover:bg-red-50 rounded-3xl transition-all opacity-0 group-hover:opacity-100">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+            </button>
+        </div>
+        `;
+    }).join('');
 
-        // Re-attach event listeners to the new buttons
-        document.querySelectorAll('.delete-trigger').forEach(btn => {
-            btn.onclick = async () => {
-                const id = btn.getAttribute('data-id');
-                if (confirm("Remove this entry from the registry?")) {
-                    await deleteDoc(doc(db, "assets", id));
-                }
-            };
-        });
+    // Re-attach delete listeners
+    document.querySelectorAll('.delete-trigger').forEach(btn => {
+        btn.onclick = async () => {
+            const id = btn.getAttribute('data-id');
+            if (confirm("Remove this entry from the registry?")) {
+                await deleteDoc(doc(db, "assets", id));
+            }
+        };
     });
-
+});
     // 4. AUTHENTICATION SHIELD
     onAuthStateChanged(auth, (user) => { 
         if (!user) window.location.href = "/login"; 
