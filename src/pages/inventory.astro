@@ -50,48 +50,64 @@ import '../styles/global.css';
     </header>
 
     <!-- MAIN CONTENT -->
-    <main class="container mx-auto px-4 md:px-6 relative z-20 -mt-12 md:mt-16">
+   <main class="container mx-auto px-4 md:px-6 relative z-20 -mt-12 md:mt-16">
+    
+    <!-- Global Stat Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-6 gap-3 md:gap-4 mb-10 md:mb-16">
         
-        <!-- Global Stat Cards: Adjusted to 2 cols on mobile, 3 on tablet, 6 on desktop -->
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 mb-10 md:mb-16">
-            <div class="bg-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl border-b-4 border-blue-600 hover:-translate-y-1 transition-all duration-300 group cursor-default">
-                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-600 transition-colors">Total Assets</p>
-                <h2 id="grand-total" class="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter">0</h2>
-            </div>
-            
-            <div class="bg-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl border-b-4 border-emerald-500 hover:-translate-y-1 transition-all duration-300 group cursor-default">
-                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-emerald-500 transition-colors">Functional</p>
-                <h2 id="func-total" class="text-2xl md:text-3xl font-black text-emerald-600 tracking-tighter">0</h2>
-            </div>
-
-            <div class="bg-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl border-b-4 border-blue-400 hover:-translate-y-1 transition-all duration-300 group cursor-default">
-                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-400">Chairs</p>
-                <h2 id="chairs-total" class="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter">0</h2>
-            </div>
-
-            <div class="bg-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl border-b-4 border-blue-400 hover:-translate-y-1 transition-all duration-300 group cursor-default">
-                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-400">Tables</p>
-                <h2 id="tables-total" class="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter">0</h2>
-            </div>
-
-            <div class="bg-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl border-b-4 border-blue-400 hover:-translate-y-1 transition-all duration-300 group cursor-default">
-                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-400">Computers</p>
-                <h2 id="pcs-total" class="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter">0</h2>
-            </div>
-
-            <!-- Export Button: Spans 2 columns on mobile to be easily clickable -->
-            <button id="export-btn" class="col-span-2 md:col-span-1 group bg-slate-900 text-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl hover:bg-blue-600 hover:-translate-y-1 transition-all duration-300 flex flex-row md:flex-col justify-center items-center gap-2 relative overflow-hidden">
-                <span class="text-[8px] md:text-[9px] font-black uppercase opacity-70 tracking-tighter">Report</span>
-                <span class="text-xs md:text-sm font-extrabold uppercase tracking-tighter">Excel Export</span>
-            </button>
+        <!-- Total Assets -->
+        <div class="bg-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl border-b-4 border-blue-600 hover:-translate-y-1 transition-all duration-300 group">
+            <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-600">Total Assets</p>
+            <h2 id="grand-total" class="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter">0</h2>
+        </div>
+        
+        <!-- Functional -->
+        <div class="bg-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl border-b-4 border-emerald-500 hover:-translate-y-1 transition-all duration-300 group">
+            <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-emerald-500">Functional</p>
+            <h2 id="func-total" class="text-2xl md:text-3xl font-black text-emerald-600 tracking-tighter">0</h2>
         </div>
 
-        <div id="block-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
-            <!-- JS Injected Content -->
+        <!-- Maintenance -->
+        <div class="bg-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl border-b-4 border-red-500 hover:-translate-y-1 transition-all duration-300 group">
+            <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-red-500">Non Functional</p>
+            <h2 id="non-func-total" class="text-2xl md:text-3xl font-black text-red-600 tracking-tighter">0</h2>
         </div>
 
-    </main>
+        <!-- Chairs -->
+        <div class="bg-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl border-b-4 border-blue-400 hover:-translate-y-1 transition-all duration-300 group">
+            <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-400">Chairs</p>
+            <h2 id="chairs-total" class="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter">0</h2>
+        </div>
 
+        <!-- Tables -->
+        <div class="bg-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl border-b-4 border-blue-400 hover:-translate-y-1 transition-all duration-300 group">
+            <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-400">Tables</p>
+            <h2 id="tables-total" class="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter">0</h2>
+        </div>
+
+        <!-- Computers -->
+        <div class="bg-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl border-b-4 border-blue-400 hover:-translate-y-1 transition-all duration-300 group">
+            <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 group-hover:text-blue-400">Computers</p>
+            <h2 id="pcs-total" class="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter">0</h2>
+        </div>
+
+        <!-- EXPORT BUTTON -->
+        <!-- col-span-2 on mobile (Full Width) | lg:col-span-2 on desktop (Compact) -->
+        <button id="export-btn" class="col-span-2 lg:col-span-2 lg:col-start-5 group bg-slate-900 text-white p-5 rounded-2xl md:rounded-[2rem] shadow-xl hover:bg-blue-600 hover:-translate-y-1 transition-all duration-300 flex justify-center items-center gap-3 mt-4">
+            <div class="text-center lg:text-left">
+                <span class="block text-[7px] font-black uppercase opacity-60 tracking-widest">2018 E.C. Ledger</span>
+                <span class="text-xs font-extrabold uppercase tracking-tighter">Export Excel</span>
+            </div>
+            <svg class="w-5 h-5 opacity-50 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+        </button>
+    </div>
+
+    <div id="block-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+        <!-- JS Injected Content -->
+    </div>
+</main>
     <!-- SYSTEM FOOTER -->
     <footer class="mt-20 pb-10 border-t border-slate-200/50">
         <div class="container mx-auto px-6">
@@ -159,53 +175,62 @@ import '../styles/global.css';
         ];
 
         onSnapshot(collection(db, "assets"), (snapshot) => {
-            currentAssets = snapshot.docs.map(doc => doc.data());
-            
-            const total = currentAssets.reduce((s, a) => s + Number(a.quantity || 0), 0);
-            const functional = currentAssets.filter(a => a.condition === 'Functional').reduce((s, a) => s + Number(a.quantity || 0), 0);
-            const chairs = currentAssets.filter(a => a.description.toLowerCase().includes('chair')).reduce((s, a) => s + Number(a.quantity || 0), 0);
-            const tables = currentAssets.filter(a => a.description.toLowerCase().includes('table')).reduce((s, a) => s + Number(a.quantity || 0), 0);
-            const pcs = currentAssets.filter(a => a.description.toLowerCase().includes('pc') || a.description.toLowerCase().includes('computer')).reduce((s, a) => s + Number(a.quantity || 0), 0);
+    currentAssets = snapshot.docs.map(doc => doc.data());
+    
+    // 1. Logic for Totals and Conditions
+    const total = currentAssets.reduce((s, a) => s + Number(a.quantity || 0), 0);
+    const functional = currentAssets.filter(a => a.condition === 'Functional').reduce((s, a) => s + Number(a.quantity || 0), 0);
+    
+    // NEW: Calculate Non-Functional items for maintenance tracking
+    const nonFunctional = currentAssets.filter(a => a.condition === 'Non-Functional').reduce((s, a) => s + Number(a.quantity || 0), 0);
 
-            document.getElementById('grand-total').innerText = total;
-            document.getElementById('func-total').innerText = functional;
-            document.getElementById('chairs-total').innerText = chairs;
-            document.getElementById('tables-total').innerText = tables;
-            document.getElementById('pcs-total').innerText = pcs;
+    // 2. Logic for Specific Item Categories
+    const chairs = currentAssets.filter(a => a.description.toLowerCase().includes('chair')).reduce((s, a) => s + Number(a.quantity || 0), 0);
+    const tables = currentAssets.filter(a => a.description.toLowerCase().includes('table')).reduce((s, a) => s + Number(a.quantity || 0), 0);
+    const pcs = currentAssets.filter(a => a.description.toLowerCase().includes('pc') || a.description.toLowerCase().includes('computer')).reduce((s, a) => s + Number(a.quantity || 0), 0);
 
-            const container = document.getElementById('block-container');
-            container.innerHTML = blockDetails.map(block => {
-                const blockAssets = currentAssets.filter(a => a.block === `Block ${block.id}`);
-                const count = blockAssets.reduce((s, a) => s + Number(a.quantity || 0), 0);
-                return `
-                <div class="bg-white rounded-[2rem] shadow-lg border border-slate-200 overflow-hidden hover:shadow-2xl transition-all group">
-                    <div class="h-44 relative">
-                        <img src="${block.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
-                        <div class="absolute bottom-4 left-4 text-white">
-                            <span class="text-[10px] font-bold uppercase tracking-widest opacity-80">Block ${block.id}</span>
-                            <h3 class="text-xl font-bold uppercase tracking-tighter">${block.label}</h3>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="text-xs text-slate-500 font-bold uppercase">${block.info}</span>
-                            <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-[10px] font-black">${count} ITEMS</span>
-                        </div>
-                        <details class="group/det">
-                            <summary class="list-none cursor-pointer text-blue-600 font-black text-[10px] flex items-center gap-1 group-open/det:mb-4 uppercase tracking-widest">
-                                <svg class="w-3 h-3 transition-transform group-open/det:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M19 9l-7 7-7-7"></path></svg>
-                                Details
-                            </summary>
-                            <div class="space-y-2 max-h-60 overflow-y-auto pr-2">
-                                ${generateSections(blockAssets)}
-                            </div>
-                        </details>
-                    </div>
+    // 3. Update the UI text elements
+    document.getElementById('grand-total').innerText = total;
+    document.getElementById('func-total').innerText = functional;
+    document.getElementById('non-func-total').innerText = nonFunctional; // NEW
+    document.getElementById('chairs-total').innerText = chairs;
+    document.getElementById('tables-total').innerText = tables;
+    document.getElementById('pcs-total').innerText = pcs;
+
+    // 4. Render Block Cards
+    const container = document.getElementById('block-container');
+    container.innerHTML = blockDetails.map(block => {
+        const blockAssets = currentAssets.filter(a => a.block === `Block ${block.id}`);
+        const count = blockAssets.reduce((s, a) => s + Number(a.quantity || 0), 0);
+        return `
+        <div class="bg-white rounded-[2rem] shadow-lg border border-slate-200 overflow-hidden hover:shadow-2xl transition-all group">
+            <div class="h-44 relative">
+                <img src="${block.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
+                <div class="absolute bottom-4 left-4 text-white">
+                    <span class="text-[10px] font-bold uppercase tracking-widest opacity-80">Block ${block.id}</span>
+                    <h3 class="text-xl font-bold uppercase tracking-tighter">${block.label}</h3>
                 </div>
-                `;
-            }).join('');
-        });
+            </div>
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xs text-slate-500 font-bold uppercase">${block.info}</span>
+                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-[10px] font-black">${count} ITEMS</span>
+                </div>
+                <details class="group/det">
+                    <summary class="list-none cursor-pointer text-blue-600 font-black text-[10px] flex items-center gap-1 group-open/det:mb-4 uppercase tracking-widest">
+                        <svg class="w-3 h-3 transition-transform group-open/det:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M19 9l-7 7-7-7"></path></svg>
+                        Details
+                    </summary>
+                    <div class="space-y-2 max-h-60 overflow-y-auto pr-2">
+                        ${generateSections(blockAssets)}
+                    </div>
+                </details>
+            </div>
+        </div>
+        `;
+    }).join('');
+});
 
         function generateSections(assets) {
     const groups = {};
@@ -225,11 +250,19 @@ import '../styles/global.css';
             </div>
             <div class="text-[10px] text-slate-500 leading-tight space-y-1">
                 ${items.map(i => `
-                    <div class="flex gap-1 border-b border-slate-200/50 pb-1 last:border-0 last:pb-0">
-                        <span class="font-bold text-blue-600 shrink-0">[${i.itemCode || 'N/A'}]</span>
-                        <span>${i.quantity}x ${i.description}</span>
-                    </div>
-                `).join('')}
+    <div class="flex flex-col gap-0.5 border-b border-slate-200/50 pb-1 last:border-0 last:pb-0">
+        <div class="flex gap-1 items-center">
+            <span class="font-bold text-blue-600 shrink-0">[${i.itemCode || 'N/A'}]</span>
+            <span>${i.quantity}x ${i.description}</span>
+        </div>
+        <!-- Only show S/N if it exists in the database -->
+        ${i.serialNumber ? `
+            <div class="text-[8px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded w-fit ml-1">
+                S/N: ${i.serialNumber}
+            </div>
+        ` : ''}
+    </div>
+`).join('')}
             </div>
         </div>
     `).join('');
@@ -247,12 +280,13 @@ import '../styles/global.css';
     // 3. Spacing Row
     const empty = [[]];
     
-    // 4. SUB-HEADINGS (Updated to include Item Code at the start)
-    const columnHeadings = [["Item Code", "Block", "Section/Room", "Item Description", "Quantity", "Condition"]];
+    // 4. SUB-HEADINGS (Added "Serial S/N")
+    const columnHeadings = [["Item Code", "Serial S/N", "Block", "Section/Room", "Item Description", "Quantity", "Condition"]];
     
-    // 5. Data Rows (Updated to pull d.itemCode)
+    // 5. Data Rows (Added d.serialNumber)
     const rows = currentAssets.map(d => [
         d.itemCode || "N/A",
+        d.serialNumber || "N/A", // New Column for Serial Numbers
         d.block || "N/A", 
         d.section || "General", 
         d.description || "Unnamed Item", 
@@ -260,7 +294,7 @@ import '../styles/global.css';
         d.condition || "N/A"
     ]);
 
-    // Combine everything into the final sheet array
+    // Combine everything
     const finalData = [
         ...title, 
         ...date, 
@@ -272,14 +306,15 @@ import '../styles/global.css';
     // Create Worksheet
     const ws = XLSX.utils.aoa_to_sheet(finalData);
 
-    // Centering the Main Heading (Merge A1 to F1 - updated to 5 for the 6th column)
+    // Centering the Main Heading (Updated merge to span 7 columns: A1 to G1)
     ws["!merges"] = [
-        { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } } 
+        { s: { r: 0, c: 0 }, e: { r: 0, c: 6 } } 
     ];
 
-    // Set Column Widths (Updated for the new 6-column layout)
+    // Set Column Widths (Updated for the new 7-column layout)
     ws["!cols"] = [
         { wch: 15 }, // Item Code
+        { wch: 20 }, // Serial S/N (wider for hardware IDs)
         { wch: 15 }, // Block
         { wch: 20 }, // Section
         { wch: 40 }, // Description
