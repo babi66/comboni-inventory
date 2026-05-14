@@ -101,8 +101,8 @@ import '../styles/global.css';
         </div>
         <svg class="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
     </button>
-
-    <label for="bulk-upload-input" class="cursor-pointer group bg-white border-2 border-dashed border-slate-300 text-slate-600 p-4 rounded-2xl md:rounded-[2rem] shadow-sm hover:border-blue-500 hover:text-blue-600 transition-all flex justify-center items-center gap-2">
+<div class="flex gap-2">
+    <label for="bulk-upload-input" class="flex-1 cursor-pointer group bg-white border-2 border-dashed border-slate-300 text-slate-600 p-4 rounded-2xl md:rounded-[2rem] shadow-sm hover:border-blue-500 hover:text-blue-600 transition-all flex justify-center items-center gap-2">
         <input type="file" id="bulk-upload-input" class="hidden" accept=".xlsx, .xls" />
         <div class="text-left">
             <span class="block text-[7px] font-black uppercase opacity-60 tracking-widest">Excel</span>
@@ -110,6 +110,12 @@ import '../styles/global.css';
         </div>
         <svg class="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
     </label>
+
+    <button onclick="downloadTemplate()" class="cursor-pointer group bg-slate-50 border-2 border-slate-200 text-slate-400 p-4 rounded-2xl md:rounded-[2rem] hover:bg-white hover:border-blue-400 hover:text-blue-500 transition-all flex flex-col justify-center items-center px-6">
+        <span class="text-[7px] font-black uppercase opacity-60 tracking-widest leading-none mb-1">Get</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+    </button>
+</div>
 </div>
     </div>
 
@@ -158,62 +164,117 @@ import '../styles/global.css';
 
     <script>
     import { db, auth } from '../lib/firebase';
-    import { collection, onSnapshot, writeBatch, doc } from "firebase/firestore";
+    import { 
+        collection, onSnapshot, writeBatch, doc, deleteDoc, serverTimestamp 
+    } from "firebase/firestore";
     import { signOut, onAuthStateChanged } from "firebase/auth";
     import * as XLSX from 'xlsx';
 
     let currentAssets = [];
 
+    // --- AUTHENTICATION ---
     onAuthStateChanged(auth, (user) => { if (!user) window.location.href = "/login"; });
     document.getElementById('logout-btn')?.addEventListener('click', () => {
         signOut(auth).then(() => window.location.href = "/login");
     });
 
-    // --- NEW: EDIT FUNCTION ---
-    // This sends the ID to the registration page via URL parameter
+    // --- 1. NEW: DELETE ENTIRE BLOCK ---
+    window.deleteBlockAssets = async (blockName) => {
+        const assetsInBlock = currentAssets.filter(a => a.block === blockName);
+        
+        if (assetsInBlock.length === 0) {
+            alert("This block is already empty.");
+            return;
+        }
+
+        const proceed = confirm(`⚠️ Are you sure? This will delete ALL ${assetsInBlock.length} items in ${blockName}. This cannot be undone.`);
+        if (!proceed) return;
+
+        try {
+            const batch = writeBatch(db);
+            assetsInBlock.forEach(asset => {
+                batch.delete(doc(db, "assets", asset.id));
+            });
+            await batch.commit();
+            alert(`Successfully cleared all items from ${blockName}`);
+        } catch (err) {
+            console.error("Block delete failed:", err);
+            alert("Error clearing block.");
+        }
+    };
+
+    // --- 2. DELETE SINGLE ITEM ---
+    window.deleteSingleAsset = async (id, name) => {
+        if (confirm(`Remove "${name}" from the registry?`)) {
+            try {
+                await deleteDoc(doc(db, "assets", id));
+            } catch (err) {
+                console.error("Delete failed:", err);
+                alert("Error removing item.");
+            }
+        }
+    };
+
+    // --- 3. EDIT NAVIGATION ---
     window.editAsset = (id) => {
         window.location.href = `/?edit=${id}`;
     };
 
-    // --- NEW: BULK UPLOAD LOGIC ---
+    // --- 4. BULK UPLOAD (FIXED TIMESTAMP) ---
     document.getElementById('bulk-upload-input')?.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+    const file = e.target.files[0];
+    if (!file) return;
 
-        const confirmUpload = confirm(`Are you sure you want to upload assets from ${file.name}?`);
-        if (!confirmUpload) return;
+    const reader = new FileReader();
+    reader.onload = async (evt) => {
+        try {
+            const data = evt.target.result;
+            const workbook = XLSX.read(data, { type: 'binary' });
+            const sheet = workbook.Sheets[workbook.SheetNames[0]];
+            const rows = XLSX.utils.sheet_to_json(sheet);
 
-        const reader = new FileReader();
-        reader.onload = async (evt) => {
-            try {
-                const data = evt.target.result;
-                const workbook = XLSX.read(data, { type: 'binary' });
-                const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                const rows = XLSX.utils.sheet_to_json(sheet);
+            // --- HEADER VALIDATION ---
+            const requiredHeaders = ["Item Code", "Block", "Item Description", "Quantity"];
+            const firstRow = rows[0] ? Object.keys(rows[0]) : [];
+            const isValid = requiredHeaders.every(h => firstRow.includes(h));
 
-                const batch = writeBatch(db);
-                rows.forEach(row => {
-                    const newDoc = doc(collection(db, "assets"));
-                    batch.set(newDoc, {
-                        itemCode: row["Item Code"] || "N/A",
-                        serialNumber: row["Serial S/N"] || "",
-                        block: row["Block"] || "Block 1",
-                        section: row["Section/Room"] || "General",
-                        description: row["Item Description"] || "Unnamed",
-                        quantity: Number(row["Quantity"]) || 1,
-                        condition: row["Condition"] || "Functional",
-                        timestamp: new Date()
-                    });
-                });
-
-                await batch.commit();
-                alert(`Successfully imported ${rows.length} assets!`);
-            } catch (err) {
-                alert("Upload failed. Ensure Excel headers match: Item Code, Serial S/N, Block, Section/Room, Item Description, Quantity, Condition");
+            if (!isValid) {
+                alert("❌ INVALID FORMAT: Please use our official Excel template.");
+                if(confirm("Would you like to download the correct template now?")) {
+                    downloadTemplate();
+                }
+                e.target.value = ''; // Reset input
+                return;
             }
-        };
-        reader.readAsBinaryString(file);
-    });
+
+            // Proceed with upload if valid
+            const confirmUpload = confirm(`Ready to import ${rows.length} items to the registry?`);
+            if (!confirmUpload) return;
+
+            const batch = writeBatch(db);
+            rows.forEach(row => {
+                const newDoc = doc(collection(db, "assets"));
+                batch.set(newDoc, {
+                    itemCode: row["Item Code"] || "N/A",
+                    serialNumber: row["Serial S/N"] || "",
+                    block: row["Block"] || "Block 1",
+                    section: row["Section/Room"] || "General",
+                    description: row["Item Description"] || "Unnamed",
+                    quantity: Number(row["Quantity"]) || 1,
+                    condition: row["Condition"] || "Functional",
+                    createdAt: serverTimestamp()
+                });
+            });
+
+            await batch.commit();
+            alert(`Successfully imported ${rows.length} assets!`);
+            e.target.value = ''; 
+        } catch (err) {
+            alert("Error reading file. Please ensure it is a valid Excel (.xlsx) file.");
+        }
+    };
+    reader.readAsBinaryString(file);
+});
 
     const blockDetails = [
         { id: 1, label: "Administration", info: "Offices & WC", img: "/images/blocks/block1.jpg" },
@@ -230,62 +291,63 @@ import '../styles/global.css';
     ];
 
     onSnapshot(collection(db, "assets"), (snapshot) => {
-    // 1. Map documents and include the ID for editing
-    currentAssets = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    
-    // 2. Calculate Totals
-    const total = currentAssets.reduce((s, a) => s + Number(a.quantity || 0), 0);
-    const functional = currentAssets.filter(a => a.condition === 'Functional').reduce((s, a) => s + Number(a.quantity || 0), 0);
-    const nonFunctional = currentAssets.filter(a => a.condition === 'Non-Functional').reduce((s, a) => s + Number(a.quantity || 0), 0);
-    
-    // 3. Category Filtering
-    const chairs = currentAssets.filter(a => a.description.toLowerCase().includes('chair')).reduce((s, a) => s + Number(a.quantity || 0), 0);
-    const tables = currentAssets.filter(a => a.description.toLowerCase().includes('table')).reduce((s, a) => s + Number(a.quantity || 0), 0);
-    const pcs = currentAssets.filter(a => a.description.toLowerCase().includes('pc') || a.description.toLowerCase().includes('computer')).reduce((s, a) => s + Number(a.quantity || 0), 0);
-
-    // 4. Update Header Stats
-    document.getElementById('grand-total').innerText = total;
-    document.getElementById('func-total').innerText = functional;
-    document.getElementById('non-func-total').innerText = nonFunctional;
-    document.getElementById('chairs-total').innerText = chairs;
-    document.getElementById('tables-total').innerText = tables;
-    document.getElementById('pcs-total').innerText = pcs;
-
-    // 5. Render Block Cards
-    const container = document.getElementById('block-container');
-    container.innerHTML = blockDetails.map(block => {
-        const blockAssets = currentAssets.filter(a => a.block === `Block ${block.id}`);
-        const count = blockAssets.reduce((s, a) => s + Number(a.quantity || 0), 0);
+        currentAssets = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         
-        return `
-        <div class="bg-white rounded-[2rem] shadow-lg border border-slate-200 overflow-hidden hover:shadow-2xl transition-all group">
-            <div class="h-44 relative">
-                <img src="${block.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
-                <div class="absolute bottom-4 left-4 text-white">
-                    <span class="text-[10px] font-bold uppercase tracking-widest opacity-80">Block ${block.id}</span>
-                    <h3 class="text-xl font-bold uppercase tracking-tighter">${block.label}</h3>
-                </div>
-            </div>
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-xs text-slate-500 font-bold uppercase">${block.info}</span>
-                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-[10px] font-black">${count} ITEMS</span>
-                </div>
-                <details class="group/det">
-                    <summary class="list-none cursor-pointer text-blue-600 font-black text-[10px] flex items-center gap-1 group-open/det:mb-4 uppercase tracking-widest">
-                        <svg class="w-3 h-3 transition-transform group-open/det:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M19 9l-7 7-7-7"></path></svg>
-                        Details
-                    </summary>
-                    <div class="space-y-2 max-h-60 overflow-y-auto pr-2">
-                        ${generateSections(blockAssets)}
+        // Totals Calculations
+        const total = currentAssets.reduce((s, a) => s + Number(a.quantity || 0), 0);
+        const functional = currentAssets.filter(a => a.condition === 'Functional').reduce((s, a) => s + Number(a.quantity || 0), 0);
+        const nonFunctional = currentAssets.filter(a => a.condition === 'Non-Functional').reduce((s, a) => s + Number(a.quantity || 0), 0);
+        const chairs = currentAssets.filter(a => a.description.toLowerCase().includes('chair')).reduce((s, a) => s + Number(a.quantity || 0), 0);
+        const tables = currentAssets.filter(a => a.description.toLowerCase().includes('table')).reduce((s, a) => s + Number(a.quantity || 0), 0);
+        const pcs = currentAssets.filter(a => a.description.toLowerCase().includes('pc') || a.description.toLowerCase().includes('computer')).reduce((s, a) => s + Number(a.quantity || 0), 0);
+
+        document.getElementById('grand-total').innerText = total;
+        document.getElementById('func-total').innerText = functional;
+        document.getElementById('non-func-total').innerText = nonFunctional;
+        document.getElementById('chairs-total').innerText = chairs;
+        document.getElementById('tables-total').innerText = tables;
+        document.getElementById('pcs-total').innerText = pcs;
+
+        const container = document.getElementById('block-container');
+        container.innerHTML = blockDetails.map(block => {
+            const blockAssets = currentAssets.filter(a => a.block === `Block ${block.id}`);
+            const count = blockAssets.reduce((s, a) => s + Number(a.quantity || 0), 0);
+            
+            return `
+            <div class="bg-white rounded-[2rem] shadow-lg border border-slate-200 overflow-hidden hover:shadow-2xl transition-all group">
+                <div class="h-44 relative">
+                    <img src="${block.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-80">Block ${block.id}</span>
+                        <h3 class="text-xl font-bold uppercase tracking-tighter">${block.label}</h3>
                     </div>
-                </details>
-            </div>
-        </div>
-        `;
-    }).join('');
-});
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-xs text-slate-500 font-bold uppercase">${block.info}</span>
+                        
+                        <div class="flex items-center gap-2">
+                            <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-[10px] font-black">${count} ITEMS</span>
+                            
+                            <button onclick="deleteBlockAssets('Block ${block.id}')" class="p-1.5 text-red-300 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all cursor-pointer" title="Delete all items in this block">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <details class="group/det">
+                        <summary class="list-none cursor-pointer text-blue-600 font-black text-[10px] flex items-center gap-1 group-open/det:mb-4 uppercase tracking-widest">
+                            <svg class="w-3 h-3 transition-transform group-open/det:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M19 9l-7 7-7-7"></path></svg>
+                            Details
+                        </summary>
+                        <div class="space-y-2 max-h-60 overflow-y-auto pr-2">
+                            ${generateSections(blockAssets)}
+                        </div>
+                    </details>
+                </div>
+            </div>`;
+        }).join('');
+    });
 
     function generateSections(assets) {
         const groups = {};
@@ -311,22 +373,58 @@ import '../styles/global.css';
                                     <span class="font-bold text-blue-600 shrink-0">[${i.itemCode || 'N/A'}]</span>
                                     <span>${i.quantity}x ${i.description}</span>
                                 </div>
-                                <button onclick="editAsset('${i.id}')" class="text-blue-500 hover:bg-blue-50 p-1 rounded-md transition-colors cursor-pointer">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
-                                </button>
+                                <div class="flex items-center gap-1">
+                                    <button onclick="editAsset('${i.id}')" class="text-blue-500 hover:bg-blue-50 p-1 rounded-md transition-colors cursor-pointer">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                                    </button>
+                                    <button onclick="deleteSingleAsset('${i.id}', '${i.description.replace(/'/g, "\\'")}')" class="text-red-400 hover:text-red-600 hover:bg-red-50 p-1 rounded-md transition-colors cursor-pointer">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    </button>
+                                </div>
                             </div>
                             ${i.serialNumber ? `<div class="text-[8px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded w-fit ml-1">S/N: ${i.serialNumber}</div>` : ''}
                         </div>
                     `).join('')}
                 </div>
-            </div>
-        `).join('');
+            </div>`).join('');
     }
 
-    // Export Logic remains the same...
+    // Export Logic...
     document.getElementById('export-btn')?.addEventListener('click', () => {
-        // ... (Your existing export code here)
+        const worksheet = XLSX.utils.json_to_sheet(currentAssets.map(a => ({
+            "Item Code": a.itemCode,
+            "Description": a.description,
+            "S/N": a.serialNumber,
+            "Block": a.block,
+            "Section": a.section,
+            "Qty": a.quantity,
+            "Condition": a.condition
+        })));
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory");
+        XLSX.writeFile(workbook, "Comboni_Inventory_2018.xlsx");
     });
+    window.downloadTemplate = () => {
+    // Define the exact headers your system expects
+    const headers = [
+        {
+            "Item Code": "COM-001",
+            "Serial S/N": "SN123456",
+            "Block": "Block 1",
+            "Section/Room": "Office A",
+            "Item Description": "Office Chair",
+            "Quantity": 1,
+            "Condition": "Functional"
+        }
+    ];
+
+    const worksheet = XLSX.utils.json_to_sheet(headers);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Template");
+    
+    // Create the file
+    XLSX.writeFile(workbook, "Comboni_Inventory_Template.xlsx");
+};
 </script>
 </body>
 </html>
